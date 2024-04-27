@@ -1,41 +1,26 @@
 package main
 
 import (
-	"log"
-	"os/exec"
-	"strings"
+	"os"
 
-	"github.com/koki-develop/go-fzf"
+	"github.com/vedantwankhade/fuzzygit/internal/app"
 )
 
-func getBranches() []string {
-	cmd := exec.Command("git", "branch", "--list")
-	b, _ := cmd.Output()
-	b = []byte(strings.TrimSpace(string(b)))
-	arr := strings.Split(string(b), "\n")
-	var branches []string
-	for _, i := range arr {
-		b := strings.TrimSpace(i)
-		branches = append(branches, strings.Replace(b, "* ", "", 1))
-	}
-	return branches
-}
-
 func main() {
-	items := getBranches()
-
-	f, err := fzf.New()
-	if err != nil {
-		log.Fatal(err)
+	var cmd app.Command
+	app.InfoLogger.Println("fuzzygit invoked")
+	if len(os.Args) < 2 {
+		cmd = app.HELP
+	} else {
+		switch os.Args[1] {
+		case "help":
+			cmd = app.HELP
+		case "branch":
+			cmd = app.BRANCH
+		default:
+			cmd = app.HELP
+		}
 	}
-
-	idxs, err := f.Find(items, func(i int) string { return items[i] })
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for _, i := range idxs {
-		cmd := exec.Command("git", "checkout", items[i])
-		cmd.Run()
-	}
+	app.InfoLogger.Println("running command", cmd)
+	app.Run(cmd)
 }
