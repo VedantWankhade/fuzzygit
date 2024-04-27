@@ -15,8 +15,8 @@ func main() {
 		switch os.Args[1] {
 		case "help":
 			cmd = app.HELP
-		case "branch":
-			cmd = app.BRANCH
+		case "checkout":
+			cmd = app.CHECKOUT
 		default:
 			cmd = app.HELP
 		}

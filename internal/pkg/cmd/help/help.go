@@ -4,6 +4,6 @@ import "fmt"
 
 func Invoke() {
 	fmt.Println(`Usage:
-	fuzzygit [help | add | branch]
+	fuzzygit [help | add | checkout]
 	`)
 }

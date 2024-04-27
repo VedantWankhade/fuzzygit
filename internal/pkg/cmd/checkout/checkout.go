@@ -1,4 +1,4 @@
-package branch
+package checkout
 
 import (
 	"log"
