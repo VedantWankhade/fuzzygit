@@ -6,12 +6,11 @@ import (
 	"strings"
 
 	"github.com/koki-develop/go-fzf"
+	"github.com/vedantwankhade/fuzzygit/internal/pkg/cmd/git"
 )
 
 func GetBranches() []string {
-	cmd := exec.Command("git", "branch", "--list")
-	b, _ := cmd.Output()
-	b = []byte(strings.TrimSpace(string(b)))
+	b := git.Cmd("branch")
 	arr := strings.Split(string(b), "\n")
 	var branches []string
 	for _, i := range arr {
@@ -21,19 +20,16 @@ func GetBranches() []string {
 	return branches
 }
 
-func Invoke() {
+func Invoke(flags []string) {
 	items := GetBranches()
-
 	f, err := fzf.New()
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	idxs, err := f.Find(items, func(i int) string { return items[i] })
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	for _, i := range idxs {
 		cmd := exec.Command("git", "checkout", items[i])
 		cmd.Run()

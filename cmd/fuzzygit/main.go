@@ -4,11 +4,13 @@ import (
 	"os"
 
 	"github.com/vedantwankhade/fuzzygit/internal/app"
+	"github.com/vedantwankhade/fuzzygit/internal/config"
 )
 
 func main() {
 	var cmd app.Command
-	app.InfoLogger.Println("fuzzygit invoked")
+	var flags []string
+	config.InfoLogger.Println("fuzzygit invoked")
 	if len(os.Args) < 2 {
 		cmd = app.HELP
 	} else {
@@ -17,10 +19,17 @@ func main() {
 			cmd = app.HELP
 		case "checkout":
 			cmd = app.CHECKOUT
+		case "diff":
+			cmd = app.DIFF
 		default:
 			cmd = app.HELP
 		}
 	}
-	app.InfoLogger.Println("running command", cmd)
-	app.Run(cmd)
+	config.InfoLogger.Println("running command", cmd)
+	if cmd == app.HELP {
+		flags = []string{}
+	} else {
+		flags = os.Args[2:]
+	}
+	app.Run(cmd, flags)
 }
