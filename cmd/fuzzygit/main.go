@@ -23,6 +23,8 @@ func main() {
 			cmd = app.DIFF
 		case "add":
 			cmd = app.ADD
+		case "unstage":
+			cmd = app.UNSTAGE
 		default:
 			cmd = app.HELP
 		}

@@ -1,3 +1,6 @@
+/*
+Ref: https://github.com/charmbracelet/bubbletea/blob/master/examples/pager/main.go
+*/
 package pager
 
 import (

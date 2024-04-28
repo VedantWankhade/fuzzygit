@@ -5,6 +5,7 @@ import (
 	branch "github.com/vedantwankhade/fuzzygit/internal/pkg/cmd/checkout"
 	"github.com/vedantwankhade/fuzzygit/internal/pkg/cmd/diff"
 	"github.com/vedantwankhade/fuzzygit/internal/pkg/cmd/help"
+	"github.com/vedantwankhade/fuzzygit/internal/pkg/cmd/unstage"
 )
 
 const (
@@ -12,6 +13,7 @@ const (
 	CHECKOUT Command = "checkout"
 	DIFF     Command = "diff"
 	ADD      Command = "add"
+	UNSTAGE  Command = "unstage"
 )
 
 func Run(command Command, flags []string) {
@@ -24,5 +26,7 @@ func Run(command Command, flags []string) {
 		diff.Invoke(flags)
 	case ADD:
 		add.Invoke(flags)
+	case UNSTAGE:
+		unstage.Invoke()
 	}
 }
