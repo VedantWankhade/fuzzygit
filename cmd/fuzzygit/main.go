@@ -21,6 +21,8 @@ func main() {
 			cmd = app.CHECKOUT
 		case "diff":
 			cmd = app.DIFF
+		case "add":
+			cmd = app.ADD
 		default:
 			cmd = app.HELP
 		}
