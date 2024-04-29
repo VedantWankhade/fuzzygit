@@ -11,11 +11,13 @@ import (
 
 func Invoke(flags []string) {
 	subcmd := "checkout"
-	_ = subcmd
 	b := git.Cmd("branch", flags...)
 	arr := strings.Split(string(b), "\n")
 	var branches []string
 	for _, i := range arr {
+		if strings.Contains(i, "->") {
+			continue
+		}
 		b := strings.TrimSpace(i)
 		branches = append(branches, strings.Replace(b, "* ", "", 1))
 	}
