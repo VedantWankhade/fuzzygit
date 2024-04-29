@@ -6,6 +6,7 @@ import (
 	"github.com/vedantwankhade/fuzzygit/internal/pkg/cmd/diff"
 	"github.com/vedantwankhade/fuzzygit/internal/pkg/cmd/help"
 	"github.com/vedantwankhade/fuzzygit/internal/pkg/cmd/log"
+	"github.com/vedantwankhade/fuzzygit/internal/pkg/cmd/rename"
 	"github.com/vedantwankhade/fuzzygit/internal/pkg/cmd/unstage"
 )
 
@@ -16,6 +17,7 @@ const (
 	ADD      Command = "add"
 	UNSTAGE  Command = "unstage"
 	LOG      Command = "log"
+	RENAME   Command = "rename"
 )
 
 func Run(command Command, flags []string) {
@@ -32,5 +34,7 @@ func Run(command Command, flags []string) {
 		unstage.Invoke()
 	case LOG:
 		log.Invoke(flags)
+	case RENAME:
+		rename.Invoke(flags)
 	}
 }

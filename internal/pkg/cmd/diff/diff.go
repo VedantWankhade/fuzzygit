@@ -10,7 +10,7 @@ import (
 	"github.com/koki-develop/go-fzf"
 	"github.com/vedantwankhade/fuzzygit/internal/config"
 	"github.com/vedantwankhade/fuzzygit/internal/pkg/cmd/git"
-	"github.com/vedantwankhade/fuzzygit/internal/pkg/cmd/pager"
+	"github.com/vedantwankhade/fuzzygit/internal/pkg/pager"
 )
 
 func Invoke(flags []string) {

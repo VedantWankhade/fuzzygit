@@ -27,6 +27,8 @@ func main() {
 			cmd = app.UNSTAGE
 		case "log":
 			cmd = app.LOG
+		case "rename":
+			cmd = app.RENAME
 		default:
 			cmd = app.HELP
 		}
