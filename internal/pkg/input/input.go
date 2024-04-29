@@ -12,8 +12,8 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
-func Get(ch chan<- string) {
-	p := tea.NewProgram(initialModel(ch))
+func Get(ch chan<- string, errCh chan<- error) {
+	p := tea.NewProgram(initialModel(ch, errCh))
 	if _, err := p.Run(); err != nil {
 		log.Fatal(err)
 	}
@@ -27,9 +27,10 @@ type model struct {
 	textInput textinput.Model
 	err       error
 	ch        chan<- string
+	errCh     chan<- error
 }
 
-func initialModel(ch chan<- string) model {
+func initialModel(ch chan<- string, errCh chan<- error) model {
 	ti := textinput.New()
 	ti.Placeholder = "feature/xyz"
 	ti.Focus()
@@ -40,6 +41,7 @@ func initialModel(ch chan<- string) model {
 		textInput: ti,
 		err:       nil,
 		ch:        ch,
+		errCh:     errCh,
 	}
 }
 
@@ -54,9 +56,12 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch msg.Type {
 		case tea.KeyCtrlC, tea.KeyEsc:
+			m.ch <- ""
+			m.errCh <- fmt.Errorf("esc")
 			return m, tea.Quit
 		case tea.KeyEnter:
 			m.ch <- m.textInput.Value()
+			m.errCh <- nil
 			return m, tea.Quit
 		}
 

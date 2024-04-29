@@ -3,10 +3,12 @@ package rename
 import (
 	"fmt"
 	"log"
+	"os"
 	"slices"
 	"strings"
 
 	"github.com/koki-develop/go-fzf"
+	"github.com/vedantwankhade/fuzzygit/internal/config"
 	"github.com/vedantwankhade/fuzzygit/internal/pkg/cmd/git"
 	"github.com/vedantwankhade/fuzzygit/internal/pkg/input"
 )
@@ -41,8 +43,15 @@ func Invoke(flags []string) {
 	for _, i := range idxs {
 		git.Cmd(subcmd, branches[i])
 		ch := make(chan string)
-		go input.Get(ch)
+		errCh := make(chan error)
+		go input.Get(ch, errCh)
 		name := <-ch
+		err := <-errCh
+		if err != nil {
+			fmt.Println("err getting user input", err)
+			config.ErrorLogger.Println("err getting user input", err)
+			os.Exit(1)
+		}
 		fmt.Println(branches[i], "->", name)
 		// git branch -m <oldname> <newname>
 		git.Cmd("branch", "-m", branches[i], name)
