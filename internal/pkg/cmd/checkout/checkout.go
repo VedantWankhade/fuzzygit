@@ -51,6 +51,21 @@ func Invoke(flags []string) {
 		}
 		git.Cmd("checkout", hashes[idxs[0]])
 		git.Cmd("switch", "-c", ("branch-" + hashes[idxs[0]]))
+	} else if slices.Contains(flags, "-t") {
+		t := git.Cmd("tag", "-l")
+		tags := strings.Split(string(t), "\n")
+		f, err := fzf.New()
+		if err != nil {
+			log.Fatal(err)
+		}
+		idxs, err := f.Find(tags, func(i int) string { return tags[i] })
+		if err != nil {
+			log.Fatal(err)
+		}
+		for _, i := range idxs {
+			git.Cmd("checkout", tags[i])
+			git.Cmd("switch", "-c", ("tag-" + tags[i]))
+		}
 	} else {
 		subcmd := "checkout"
 		b := git.Cmd("branch", flags...)
