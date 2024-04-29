@@ -2,7 +2,7 @@ package checkout
 
 import (
 	"log"
-	"os/exec"
+	"slices"
 	"strings"
 
 	"github.com/koki-develop/go-fzf"
@@ -10,6 +10,8 @@ import (
 )
 
 func Invoke(flags []string) {
+	subcmd := "checkout"
+	_ = subcmd
 	b := git.Cmd("branch", flags...)
 	arr := strings.Split(string(b), "\n")
 	var branches []string
@@ -25,8 +27,14 @@ func Invoke(flags []string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	if slices.Contains(flags, "-r") {
+		subcmd = "switch"
+		for _, i := range idxs {
+			branches[i] = strings.SplitAfterN(branches[i], "/", 2)[1]
+		}
+		git.Cmd("fetch")
+	}
 	for _, i := range idxs {
-		cmd := exec.Command("git", "checkout", branches[i])
-		cmd.Run()
+		git.Cmd(subcmd, branches[i])
 	}
 }
