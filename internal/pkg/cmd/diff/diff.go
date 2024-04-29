@@ -14,15 +14,14 @@ import (
 )
 
 func Invoke(flags []string) {
+	flags = append(flags, "--name-only")
+	res := git.Cmd("diff", flags...)
+	fileNames := strings.Split(res, "\n")
 	for {
-		flags = append(flags, "--name-only")
-		res := git.Cmd("diff", flags...)
-		fileNames := strings.Split(res, "\n")
 		f, err := fzf.New()
 		if err != nil {
 			log.Fatal(err)
 		}
-
 		idxs, err := f.Find(
 			fileNames,
 			func(i int) string { return fileNames[i] },

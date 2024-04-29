@@ -25,6 +25,8 @@ func main() {
 			cmd = app.ADD
 		case "unstage":
 			cmd = app.UNSTAGE
+		case "log":
+			cmd = app.LOG
 		default:
 			cmd = app.HELP
 		}
