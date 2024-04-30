@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"slices"
 	"strings"
 
 	"github.com/koki-develop/go-fzf"
@@ -13,7 +12,7 @@ import (
 )
 
 func Invoke(flags []string) {
-	flags = append(flags, "-o", "-m")
+	flags = append(flags, "--exclude-standard", "-o", "-m")
 	res := git.Cmd("ls-files", flags...)
 	fileNames := strings.Split(res, "\n")
 	f, err := fzf.New(fzf.WithNoLimit(true))
@@ -26,18 +25,18 @@ func Invoke(flags []string) {
 		func(i int) string { return fileNames[i] },
 		fzf.WithPreviewWindow(func(i, width, height int) string {
 			var options []string
-			if slices.Contains(flags, "--staged") {
-				options = append(options, "--staged")
-			}
 			options = append(options, "--color=always")
 			options = append(options, "--")
 			options = append(options, "{-1}")
 			options = append(options, fileNames[i])
 			diff := git.Cmd("diff", options...)
 			if diff == "" {
+				fmt.Println("reading")
+				config.InfoLogger.Println("reading file", fileNames[i])
 				content, err := os.ReadFile(fileNames[i])
 				if err != nil {
 					config.ErrorLogger.Println("error reading", fileNames[i])
+					fmt.Println("error reading", fileNames[i])
 				}
 				diff = string(content)
 			}
