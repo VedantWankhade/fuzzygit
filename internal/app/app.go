@@ -23,7 +23,7 @@ const (
 func Run(command Command, flags []string) {
 	switch command {
 	case HELP:
-		help.Invoke()
+		help.Invoke(flags)
 	case CHECKOUT:
 		branch.Invoke(flags)
 	case DIFF:
