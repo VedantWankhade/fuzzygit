@@ -28,6 +28,7 @@ func init() {
 		"Print this help menu":       "fuzzygit help",
 		"Show diff of tracked files": "fuzzygit diff",
 		"Show diff of staged files":  "fuzzygit diff --staged",
+		"Show diff of two commits":   "fuzzygit diff -c",
 		"Stage changes(files)":       "fuzzygit add",
 		"Checkout local branch":      "fuzzygit checkout",
 		"Checkout remote branch":     "fuzzygit checkout -r",
